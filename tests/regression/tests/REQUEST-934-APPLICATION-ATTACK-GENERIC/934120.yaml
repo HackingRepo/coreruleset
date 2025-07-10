@@ -1,6 +1,6 @@
 ---
 meta:
-  author: "fzipitria, Max Leske, azurit"
+  author: "fzipitria, Max Leske, azurit, Ethc4"
 rule_id: 934120
 tests:
   - test_id: 1
@@ -883,6 +883,237 @@ tests:
             Accept-Language: en-us,en;q=0.5
           method: GET
           uri: "/get?ssrf=local_file://2852039166/"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 45
+    desc: SSRF - DNS protocol scheme
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 53
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+          method: GET
+          uri: "/get?ssrf=dns://example.com/"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 46
+    desc: SSRF - JDBC protocol scheme
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 3306
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+          method: GET
+          uri: "/get?ssrf=jdbc:mysql://127.0.0.1:3306/db"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 47
+    desc: SSRF - Oracle protocol scheme
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 1521
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+          method: GET
+          uri: "/get?ssrf=oracle://127.0.0.1:1521/service"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 48
+    desc: SSRF - MSSQL protocol scheme
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 1433
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+          method: GET
+          uri: "/get?ssrf=mssql://127.0.0.1:1433/db"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 49
+    desc: SSRF - MongoDB protocol scheme
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 27017
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+          method: GET
+          uri: "/get?ssrf=mongodb://127.0.0.1:27017/db"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 50
+    desc: SSRF - PostgreSQL protocol scheme
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 5432
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+          method: GET
+          uri: "/get?ssrf=postgresql://127.0.0.1:5432/db"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 51
+    desc: SSRF - SOCKS4 protocol scheme
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 1080
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+          method: GET
+          uri: "/get?ssrf=socks4://127.0.0.1:1080"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+
+  - test_id: 52
+    desc: SSRF - SOCKS5 protocol scheme
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 1080
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+          method: GET
+          uri: "/get?ssrf=socks5://127.0.0.1:1080"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 53
+    desc: SSRF - AFS3 protocol access attempt
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 7000
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+            Accept: "*/*"
+            Accept-Encoding: gzip,deflate
+            Accept-Language: en-us,en;q=0.5
+          method: GET
+          uri: "/get?ssrf=afs3://127.0.0.1:7000/"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 54
+    desc: SSRF - AFS3 protocol with path
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 7001
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+            Accept: "*/*"
+            Accept-Encoding: gzip,deflate
+            Accept-Language: en-us,en;q=0.5
+          method: GET
+          uri: "/get?ssrf=afs3://127.0.0.1:7001/volumes/"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  # FAX protocol SSRF tests
+  - test_id: 55
+    desc: SSRF - FAX protocol access attempt
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 4559
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+            Accept: "*/*"
+            Accept-Encoding: gzip,deflate
+            Accept-Language: en-us,en;q=0.5
+          method: GET
+          uri: "/get?ssrf=fax://127.0.0.1:4559/"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 56
+    desc: SSRF - FAX protocol with parameters
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 4559
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+            Accept: "*/*"
+            Accept-Encoding: gzip,deflate
+            Accept-Language: en-us,en;q=0.5
+          method: GET
+          uri: "/get?ssrf=fax://127.0.0.1:4559/send?number=1234567890"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  # IAX2 protocol SSRF tests
+  - test_id: 57
+    desc: SSRF - IAX2 protocol access attempt
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 4569
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+            Accept: "*/*"
+            Accept-Encoding: gzip,deflate
+            Accept-Language: en-us,en;q=0.5
+          method: GET
+          uri: "/get?ssrf=iax2://127.0.0.1:4569/"
+          version: "HTTP/1.1"
+        output:
+          log:
+            expect_ids: [934120]
+  - test_id: 58
+    desc: SSRF - IAX2 protocol with call initiation
+    stages:
+      - input:
+          dest_addr: "127.0.0.1"
+          port: 4569
+          headers:
+            Host: "localhost"
+            User-Agent: "OWASP CRS test agent"
+            Accept: "*/*"
+            Accept-Encoding: gzip,deflate
+            Accept-Language: en-us,en;q=0.5
+          method: GET
+          uri: "/get?ssrf=iax2://127.0.0.1:4569/call?peer=1001"
           version: "HTTP/1.1"
         output:
           log:
