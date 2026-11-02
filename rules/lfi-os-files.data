@@ -932,3 +932,4 @@ xampp/php
 xampp/sendmail
 xampp/webalizer/webalizer.conf
 yarn.lock
+WS_FTP.log
